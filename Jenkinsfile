@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DIRECTORY_PATH = 'C:\Users\jesti\OneDrive - Deakin University\Desktop\SIT223\4.1Gp\Deakin-Unit-Page'
+        DIRECTORY_PATH = 'C:\Users\jesti\OneDrive - Deakin University\Desktop\SIT223\4.1Gp\Deakin-Unit-Page\index.html'
         TESTING_ENVIRONMENT = 'test-environment'
         PRODUCTION_ENVIRONMENT = 'Jes'
     }
