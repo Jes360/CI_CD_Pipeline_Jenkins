@@ -1,44 +1,53 @@
 pipeline {
     agent any
 
-    environment {
-        TESTING_ENVIRONMENT = 'test-environment'
-        PRODUCTION_ENVIRONMENT = 'Jes'
-    }
-
     stages {
         stage('Build') {
             steps {
-                echo "Fetch the source code from the directory path: ${env.DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artifacts"
+                echo 'Building the application using Maven'
+                // Maven could be invoked here if implementing: sh 'mvn clean package'
             }
         }
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Unit tests"
-                echo "Integration tests"
+                echo 'Running unit and integration tests using JUnit and Selenium'
+                // Commands to run JUnit and Selenium tests would be placed here
             }
         }
-        stage('Code Quality Check') {
+        stage('Code Analysis') {
             steps {
-                echo "Check the quality of the code"
+                echo 'Analyzing code with SonarQube'
+                // SonarQube analysis command could be here
             }
         }
-        stage('Deploy') {
+        stage('Security Scan') {
             steps {
-                echo "Deploy the application to the testing environment: ${env.TESTING_ENVIRONMENT}"
+                echo 'Performing security scan using OWASP ZAP'
+                // OWASP ZAP scanning commands could go here
             }
         }
-        stage('Approval') {
+        stage('Deploy to Staging') {
             steps {
-                echo "Pausing for manual approval"
-                sleep 10
+                echo 'Deploying to AWS EC2 staging server'
+                // Deployment scripts to AWS EC2
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging environment'
+                // Integration testing commands in the staging environment
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploy the code to the production environment: ${env.PRODUCTION_ENVIRONMENT}"
+                echo 'Deploying to AWS EC2 production server'
+                // Deployment scripts to AWS EC2
             }
+        }
+    }
+    post {
+        always {
+            mail bcc: '', body: "Stage Completed: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL} to view test results.", cc: '', from: '', replyTo: '', subject: "Pipeline Notification: ${currentBuild.fullDisplayName}", to: "email@example.com"
         }
     }
 }
