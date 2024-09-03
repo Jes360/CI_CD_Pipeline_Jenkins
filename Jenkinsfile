@@ -2,69 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building the application using Maven'
-                // Example: sh 'mvn clean package'
-            }
-        }
-        stage('Unit and Integration Tests') {
-            steps {
-                echo 'Running unit and integration tests using JUnit and Selenium'
-                // Example: sh 'run-tests.sh'
-            }
-            post {
-                always {
-                    emailext (
-                        to: 'emailjenkins55@gmail.com',
-                        subject: "Completed: Unit and Integration Tests - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                        body: """<p>Tests completed with status: ${currentBuild.currentResult}</p>
-                                 <p>View detailed test results at: <a href="${env.BUILD_URL}console">Build Console</a></p>""",
-                        attachLog: true
-                    )
-                }
-            }
-        }
-        stage('Code Analysis') {
-            steps {
-                echo 'Analyzing code with SonarQube'
-                // Example: sh 'sonarqube-analysis.sh'
-            }
-        }
-        stage('Security Scan') {
-            steps {
-                echo 'Performing security scan using OWASP ZAP'
-                // Example: sh 'zap-security-scan.sh'
-            }
-            post {
-                always {
-                    emailext (
-                        to: 'emailjenkins55@gmail.com',
-                        subject: "Completed: Security Scan - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                        body: """<p>Security scan completed with status: ${currentBuild.currentResult}</p>
-                                 <p>View security scan details at: <a href="${env.BUILD_URL}console">Build Console</a></p>""",
-                        attachLog: true
-                    )
-                }
-            }
-        }
-        stage('Deploy to Staging') {
-            steps {
-                echo 'Deploying to AWS EC2 staging server'
-                // Example: sh 'deploy-staging.sh'
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                echo 'Running integration tests on staging environment'
-                // Example: sh 'integration-tests-staging.sh'
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                echo 'Deploying to AWS EC2 production server'
-                // Example: sh 'deploy-production.sh'
-            }
+        // Define your stages as before
+    }
+    post {
+        always {
+            // Checks if Email Extension plugin is properly referenced
+            emailext (
+                recipients: 'emailjenkins55@gmail.com',
+                subject: "Jenkins Build Notification: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """<p>The build was ${currentBuild.currentResult}.</p>
+                         <p>See more details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                attachLog: true
+            )
         }
     }
 }
