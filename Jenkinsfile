@@ -5,53 +5,70 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application using Maven'
-                // Example command: sh 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests using JUnit and Selenium'
-                // Example command: sh 'run-tests.sh'
+            }
+            post {
+                success {
+                    mail bcc: '',
+                         body: "Unit and Integration Tests Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                         subject: "SUCCESS: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
+                         to: "emailjenkins55@gmail.com"
+                }
+                failure {
+                    mail bcc: '',
+                         body: "Unit and Integration Tests Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                         subject: "FAILURE: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
+                         to: "emailjenkins55@gmail.com"
+                }
             }
         }
         stage('Code Analysis') {
             steps {
                 echo 'Analyzing code with SonarQube'
-                // Example command: sh 'sonarqube-analysis.sh'
             }
         }
         stage('Security Scan') {
             steps {
                 echo 'Performing security scan using OWASP ZAP'
-                // Example command: sh 'zap-security-scan.sh'
+            }
+            post {
+                success {
+                    mail bcc: '',
+                         body: "Security Scan Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                         subject: "SUCCESS: Security Scan - ${currentBuild.fullDisplayName}",
+                         to: "emailjenkins55@gmail.com"
+                }
+                failure {
+                    mail bcc: '',
+                         body: "Security Scan Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                         subject: "FAILURE: Security Scan - ${currentBuild.fullDisplayName}",
+                         to: "emailjenkins55@gmail.com"
+                }
             }
         }
-        post {
-        always {
-        emailext (
-            recipients: 'your-email@example.com',
-            subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-            body: "The build has finished with status: ${currentBuild.currentResult}\nCheck details at: ${env.BUILD_URL}",
-            attachLog: false
-        )
-    }
-       stage('Deploy to Staging') {
+        stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to AWS EC2 staging server'
-                // Example command: sh 'deploy-staging.sh'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running integration tests on staging environment'
-                // Example command: sh 'integration-tests-staging.sh'
             }
         }
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to AWS EC2 production server'
-                // Example command: sh 'deploy-production.sh'
             }
         }
-
+    }
+    post {
+        always {
+            echo 'This is a general notification that the job has completed. Check individual stages for specific results.'
         }
+    }
+}
