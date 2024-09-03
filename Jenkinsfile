@@ -26,7 +26,16 @@ pipeline {
                 // Example command: sh 'zap-security-scan.sh'
             }
         }
-        stage('Deploy to Staging') {
+        post {
+        always {
+        emailext (
+            recipients: 'your-email@example.com',
+            subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+            body: "The build has finished with status: ${currentBuild.currentResult}\nCheck details at: ${env.BUILD_URL}",
+            attachLog: false
+        )
+    }
+       stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to AWS EC2 staging server'
                 // Example command: sh 'deploy-staging.sh'
@@ -44,16 +53,4 @@ pipeline {
                 // Example command: sh 'deploy-production.sh'
             }
         }
-    }
-    post {
-        always {
-            emailext (
-                to: 'emailjenkins55@gmail.com',
-                subject: "Jenkins Build Notification: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """<p>The build was ${currentBuild.currentResult}.</p>
-                         <p>See more details at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
-                attachLog: true
-            )
-        }
-    }
-}
+
