@@ -5,49 +5,66 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application using Maven'
-                // Maven could be invoked here if implementing: sh 'mvn clean package'
+                // Example: sh 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests using JUnit and Selenium'
-                // Commands to run JUnit and Selenium tests would be placed here
+                // Example: sh 'run-tests.sh'
+            }
+            post {
+                always {
+                    emailext (
+                        to: 'emailjenkins55@gmail.com',
+                        subject: "Completed: Unit and Integration Tests - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: """<p>Tests completed with status: ${currentBuild.currentResult}</p>
+                                 <p>View detailed test results at: <a href="${env.BUILD_URL}console">Build Console</a></p>""",
+                        attachLog: true
+                    )
+                }
             }
         }
         stage('Code Analysis') {
             steps {
                 echo 'Analyzing code with SonarQube'
-                // SonarQube analysis command could be here
+                // Example: sh 'sonarqube-analysis.sh'
             }
         }
         stage('Security Scan') {
             steps {
                 echo 'Performing security scan using OWASP ZAP'
-                // OWASP ZAP scanning commands could go here
+                // Example: sh 'zap-security-scan.sh'
+            }
+            post {
+                always {
+                    emailext (
+                        to: 'emailjenkins55@gmail.com',
+                        subject: "Completed: Security Scan - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: """<p>Security scan completed with status: ${currentBuild.currentResult}</p>
+                                 <p>View security scan details at: <a href="${env.BUILD_URL}console">Build Console</a></p>""",
+                        attachLog: true
+                    )
+                }
             }
         }
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to AWS EC2 staging server'
-                // Deployment scripts to AWS EC2
+                // Example: sh 'deploy-staging.sh'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running integration tests on staging environment'
-                // Integration testing commands in the staging environment
+                // Example: sh 'integration-tests-staging.sh'
             }
         }
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to AWS EC2 production server'
-                // Deployment scripts to AWS EC2
+                // Example: sh 'deploy-production.sh'
             }
-        }
-    }
-    post {
-        always {
-            mail bcc: '', body: "Stage Completed: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL} to view test results.", cc: '', from: '', replyTo: '', subject: "Pipeline Notification: ${currentBuild.fullDisplayName}", to: "emailjenkins55@gmail.com"
         }
     }
 }
