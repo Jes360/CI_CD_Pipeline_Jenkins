@@ -13,16 +13,22 @@ pipeline {
             }
             post {
                 success {
-                    mail bcc: '',
-                         body: "Unit and Integration Tests Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                         subject: "SUCCESS: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
-                         to: "emailjenkins55@gmail.com"
+                    emailext(
+                        to: 'emailjenkins55@gmail.com',
+                        subject: "SUCCESS: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
+                        body: "Unit and Integration Tests Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
+                        mimeType: 'text/plain'
+                    )
                 }
                 failure {
-                    mail bcc: '',
-                         body: "Unit and Integration Tests Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                         subject: "FAILURE: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
-                         to: "emailjenkins55@gmail.com"
+                    emailext(
+                        to: 'emailjenkins55@gmail.com',
+                        subject: "FAILURE: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
+                        body: "Unit and Integration Tests Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
+                        mimeType: 'text/plain'
+                    )
                 }
             }
         }
@@ -37,16 +43,22 @@ pipeline {
             }
             post {
                 success {
-                    mail bcc: '',
-                         body: "Security Scan Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                         subject: "SUCCESS: Security Scan - ${currentBuild.fullDisplayName}",
-                         to: "emailjenkins55@gmail.com"
+                    emailext(
+                        to: 'emailjenkins55@gmail.com',
+                        subject: "SUCCESS: Security Scan - ${currentBuild.fullDisplayName}",
+                        body: "Security Scan Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
+                        mimeType: 'text/plain'
+                    )
                 }
                 failure {
-                    mail bcc: '',
-                         body: "Security Scan Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                         subject: "FAILURE: Security Scan - ${currentBuild.fullDisplayName}",
-                         to: "emailjenkins55@gmail.com"
+                    emailext(
+                        to: 'emailjenkins55@gmail.com',
+                        subject: "FAILURE: Security Scan - ${currentBuild.fullDisplayName}",
+                        body: "Security Scan Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
+                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
+                        mimeType: 'text/plain'
+                    )
                 }
             }
         }
