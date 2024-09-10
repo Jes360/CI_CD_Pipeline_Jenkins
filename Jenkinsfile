@@ -1,86 +1,44 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
                 echo 'Building the application using Maven'
+                sh 'mvn clean package' // This actually builds the application and generates logs and artifacts.
             }
         }
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests using JUnit and Selenium'
-            }
-            post {
-                success {
-                    emailext(
-                        to: 'emailjenkins55@gmail.com',
-                        subject: "SUCCESS: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
-                        body: "Unit and Integration Tests Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
-                        mimeType: 'text/plain'
-                    )
-                }
-                failure {
-                    emailext(
-                        to: 'emailjenkins55@gmail.com',
-                        subject: "FAILURE: Unit and Integration Tests - ${currentBuild.fullDisplayName}",
-                        body: "Unit and Integration Tests Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
-                        mimeType: 'text/plain'
-                    )
-                }
+                sh 'mvn test' // Executes tests and generates test reports.
             }
         }
-        stage('Code Analysis') {
-            steps {
-                echo 'Analyzing code with SonarQube'
-            }
-        }
-        stage('Security Scan') {
-            steps {
-                echo 'Performing security scan using OWASP ZAP'
-            }
-            post {
-                success {
-                    emailext(
-                        to: 'emailjenkins55@gmail.com',
-                        subject: "SUCCESS: Security Scan - ${currentBuild.fullDisplayName}",
-                        body: "Security Scan Completed Successfully: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
-                        mimeType: 'text/plain'
-                    )
-                }
-                failure {
-                    emailext(
-                        to: 'emailjenkins55@gmail.com',
-                        subject: "FAILURE: Security Scan - ${currentBuild.fullDisplayName}",
-                        body: "Security Scan Failed: ${currentBuild.fullDisplayName}\nCheck console output at ${env.BUILD_URL}.",
-                        attachmentsPattern: 'logs/**/*.log', // Adjust the pattern to where your logs are stored
-                        mimeType: 'text/plain'
-                    )
-                }
-            }
-        }
-        stage('Deploy to Staging') {
-            steps {
-                echo 'Deploying to AWS EC2 staging server'
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                echo 'Running integration tests on staging environment'
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                echo 'Deploying to AWS EC2 production server'
-            }
-        }
+        // Additional stages as needed...
     }
     post {
         always {
-            echo 'This is a general notification that the job has completed. Check individual stages for specific results.'
+            // Gather detailed information
+            def buildStatus = currentBuild.currentResult
+            def buildUrl = "${env.BUILD_URL}"
+            def jobName = "${env.JOB_NAME}"
+            def buildNumber = "${env.BUILD_NUMBER}"
+
+            // Construct the email body
+            def emailBody = """
+                <h1>Build Report - ${jobName} #${buildNumber}</h1>
+                <p>Status: <strong>${buildStatus}</strong></p>
+                <p>Build details are available at: <a href='${buildUrl}'>${buildUrl}</a></p>
+                <p>Please find attached the logs and test reports for more details.</p>
+            """
+
+            // Send email with attachments
+            emailext(
+                to: 'emailjenkins55@gmail.com',
+                subject: "Build Notification: ${jobName} #${buildNumber}",
+                body: emailBody,
+                attachmentsPattern: '**/target/*.log,**/target/surefire-reports/*.xml', // Attach build logs and test reports
+                mimeType: 'text/html'
+            )
         }
     }
 }
