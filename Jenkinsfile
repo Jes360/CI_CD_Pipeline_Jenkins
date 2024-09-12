@@ -68,10 +68,22 @@ pipeline {
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
-          
-            
-            // Optionally delete the log file if no longer needed
-            // bat "del ${LOG_FILE}"
+            // Send the email with the log file as attachment
+            emailext attachLog: false,
+                     attachmentsPattern: "${LOG_FILE}",
+                     to: "${env.RECIPIENT_EMAIL}",
+                     subject: "Jenkins Pipeline Log: ${currentBuild.fullDisplayName}",
+                     body: """
+                        Hi Team,
+                        
+                        The Jenkins pipeline has completed. Please find the log file attached for more details.
+                        
+                        Build result: ${currentBuild.currentResult}
+                        Build URL: ${env.BUILD_URL}
+                        
+                        Regards,
+                        Jenkins
+                     """
         }
     }
 }
