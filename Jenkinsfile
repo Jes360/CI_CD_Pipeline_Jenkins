@@ -65,13 +65,8 @@ pipeline {
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
-            emailext (
-                to: "emailjenkins55@gmail.com",
-                subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
-                body: "The pipeline has completed with status: ${currentBuild.currentResult}.\\nPlease find the attached logs for more details.",
-            )
-            // Optionally delete the log file if no longer needed
-            // bat "del ${LOG_FILE}"
+          mail bcc: '', body: "Stage Completed: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL} to view test results.", cc: '', from: '', replyTo: '', subject: "Pipeline Notification: ${currentBuild.fullDisplayName}", to: "emailjenkins55@gmail.com"
         }
     }
 }
+      
