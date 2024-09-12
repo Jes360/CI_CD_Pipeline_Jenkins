@@ -69,25 +69,7 @@ pipeline {
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
                 
-                // Read the log file and encode it in base64
-                def logContent = readFile("${LOG_FILE}").bytes.encodeBase64().toString()
-
-                // Create the email content with an attachment as base64
-                mail to: "${env.RECIPIENT_EMAIL}",
-                     subject: "Jenkins Pipeline Log: ${currentBuild.fullDisplayName}",
-                     body: """
-                        Hi Team,
-
-                        The Jenkins pipeline has completed. Please find the log file attached for more details.
-
-                        Build result: ${currentBuild.currentResult}
-                        Build URL: ${env.BUILD_URL}
-
-                        Regards,
-                        Jenkins
-                     """,
-                     mimeType: 'text/plain',
-                     attachments: [[fileName: 'final-pipeline-log.txt', fileData: logContent]]
+               
             }
         }
     }
