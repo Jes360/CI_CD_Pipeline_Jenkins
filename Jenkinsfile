@@ -65,9 +65,13 @@ pipeline {
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
-        mail bcc: '', body: "Stage Completed: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL} to view test results.", cc: '', from: '', replyTo: '', subject: "Pipeline Notification: ${currentBuild.fullDisplayName}", to: "emailjenkins55@gmail.com",
-        attachmentsPattern: "**/final-pipeline-log.txt",
-        mimeType: 'text/plain'
+       // mail bcc: '', body: "Stage Completed: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL} to view test results.", cc: '', from: '', replyTo: '', subject: "Pipeline Notification: ${currentBuild.fullDisplayName}", to: "emailjenkins55@gmail.com",
+        //attachmentsPattern: "**/final-pipeline-log.txt",
+        //mimeType: 'text/plain'
+
+                emailext body: 'Test Message',
+                subject: 'Test Subject',
+                to: 'emailjenkins55@gmail.com'
         }
     }
 }
