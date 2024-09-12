@@ -72,9 +72,9 @@ pipeline {
             emailext 
            // attachlog: False
               //       attachmentsPattern: "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt",
-                //     subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
-                  //   body: '''Build #${env.BUILD_NUMBER} has completed.
-                           //   Please find the attached log file for details.''',
+                    subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
+                     body: '''Build #${env.BUILD_NUMBER} has completed.
+                              Please find the attached log file for details.''',
                      to: "${env.RECIPIENT_EMAIL}"
             
         }
