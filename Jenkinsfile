@@ -69,7 +69,7 @@ pipeline {
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
           
-            )
+            
             // Optionally delete the log file if no longer needed
             // bat "del ${LOG_FILE}"
         }
