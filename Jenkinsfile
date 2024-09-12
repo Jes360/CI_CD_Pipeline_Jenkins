@@ -69,7 +69,7 @@ pipeline {
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
             emailext (
-                to: "${env.RECIPIENT_EMAIL}",
+                to: "emailjenkins55@gmail.com",
                 subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
                 body: "The pipeline has completed with status: ${currentBuild.currentResult}.\\nPlease find the attached logs for more details.",
                 attachmentsPattern: "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt",
