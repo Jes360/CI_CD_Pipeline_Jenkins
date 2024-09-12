@@ -73,8 +73,7 @@ pipeline {
             emailext attachLog: true,
                      attachmentsPattern: "${env.LOG_FILE}",
                      subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
-                     body: "Build #${env.BUILD_NUMBER} has completed.
-                            "Please find the attached log file for details.",
+                     body: "Build #${env.BUILD_NUMBER} has completed.Please find the attached log file for details.",
                      to: "${env.RECIPIENT_EMAIL}",
                      mimeType: 'text/plain'
         }
