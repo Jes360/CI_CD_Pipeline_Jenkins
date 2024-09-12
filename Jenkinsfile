@@ -75,7 +75,7 @@ pipeline {
                 //     subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
                   //   body: '''Build #${env.BUILD_NUMBER} has completed.
                               Please find the attached log file for details.''',
-                     to: "${env.RECIPIENT_EMAIL}",
+                     to: "${env.RECIPIENT_EMAIL}"
             
         }
     }
