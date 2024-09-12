@@ -10,14 +10,14 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    BUILD_LOGS = "Building the code...\nBuild tool: Maven\n"
+                    BUILD_LOGS = "Building the code...,Build tool: Maven\n "
                 }
             }
         }
         stage('Unit and Integration Tests') {
             steps {
                 script {
-                    TEST_LOGS = "Running unit and integration tests...\nTest tools: JUnit, Selenium\n"
+                    TEST_LOGS = " Running unit and integration tests...,Test tools: JUnit, Selenium "
                 }
             }
             post {
@@ -34,14 +34,14 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                    CODE_ANALYSIS_LOGS = "Analyzing code quality...\nCode analysis tool: SonarQube\n"
+                    CODE_ANALYSIS_LOGS = " Analyzing code quality...,Code analysis tool: SonarQube "
                 }
             }
         }
         stage('Security Scan') {
             steps {
                 script {
-                    SECURITY_SCAN_LOGS = "Performing security scan...\nSecurity scan tool: OWASP Dependency Check\n"
+                    SECURITY_SCAN_LOGS = " Performing security scan...,Security scan tool: OWASP Dependency Check "
                 }
             }
             post {
@@ -58,21 +58,21 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    DEPLOY_STAGING_LOGS = "Deploying to staging environment...\nDeploying to ${env.STAGING_SERVER}\n"
+                    DEPLOY_STAGING_LOGS = " Deploying to staging environment...,Deploying to ${env.STAGING_SERVER} "
                 }
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 script {
-                    INTEGRATION_STAGING_LOGS = "Running integration tests on staging...\n"
+                    INTEGRATION_STAGING_LOGS = " Running integration tests on staging... "
                 }
             }
         }
         stage('Deploy to Production') {
             steps {
                 script {
-                    DEPLOY_PROD_LOGS = "Deploying to production environment...\nDeploying to ${env.PRODUCTION_SERVER}\n"
+                    DEPLOY_PROD_LOGS = " Deploying to production environment...,Deploying to ${env.PRODUCTION_SERVER} "
                 }
             }
         }
@@ -81,8 +81,8 @@ pipeline {
         always {
             script {
                 // Combine all log strings into one final log message and write to the log file
-                FINAL_LOGS = BUILD_LOGS , + ,TEST_LOGS + ,CODE_ANALYSIS_LOGS + ,SECURITY_SCAN_LOGS +
-                             ,DEPLOY_STAGING_LOGS + ,INTEGRATION_STAGING_LOGS + ,DEPLOY_PROD_LOGS
+                FINAL_LOGS = BUILD_LOGS  + TEST_LOGS + CODE_ANALYSIS_LOGS + SECURITY_SCAN_LOGS +
+                             DEPLOY_STAGING_LOGS + INTEGRATION_STAGING_LOGS + DEPLOY_PROD_LOGS
                 bat "echo ${FINAL_LOGS.replace('\n', '^n')} > ${LOG_FILE}"
             }
             emailext(
