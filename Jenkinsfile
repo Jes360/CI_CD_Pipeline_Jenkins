@@ -81,8 +81,8 @@ pipeline {
         always {
             script {
                 // Combine all log strings into one final log message and write to the log file
-                FINAL_LOGS = BUILD_LOGS + TEST_LOGS + CODE_ANALYSIS_LOGS + SECURITY_SCAN_LOGS +
-                             DEPLOY_STAGING_LOGS + INTEGRATION_STAGING_LOGS + DEPLOY_PROD_LOGS
+                FINAL_LOGS = BUILD_LOGS , + ,TEST_LOGS + ,CODE_ANALYSIS_LOGS + ,SECURITY_SCAN_LOGS +
+                             ,DEPLOY_STAGING_LOGS + ,INTEGRATION_STAGING_LOGS + ,DEPLOY_PROD_LOGS
                 bat "echo ${FINAL_LOGS.replace('\n', '^n')} > ${LOG_FILE}"
             }
             emailext(
