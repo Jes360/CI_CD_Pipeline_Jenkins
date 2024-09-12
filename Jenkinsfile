@@ -5,7 +5,7 @@ pipeline {
         PRODUCTION_SERVER = 'production-server.example.com'
         RECIPIENT_EMAIL = 'emailjenkins55@gmail.com'
         // Define a simple log file name
-        LOG_FILE = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt"
+        LOG_FILE = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\test\\final-pipeline-log.txt"
     }
     stages {
         stage('Build') {
