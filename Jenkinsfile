@@ -69,7 +69,7 @@ pipeline {
                 bat "echo ${FINAL_LOGS.replace('\n', '^n')} > ${LOG_FILE}"
             }
             // Send email with the log file attached
-            emailext attachLog: false,
+            emailext attachLog: True,
                      attachmentsPattern: "${env.LOG_FILE}",
                      subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
                      body: '''Build #${env.BUILD_NUMBER} has completed.
