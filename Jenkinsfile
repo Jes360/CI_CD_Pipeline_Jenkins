@@ -1,6 +1,9 @@
 pipeline {
     agent any
     environment {
+        STAGING_SERVER = 'staging-server.example.com'
+        PRODUCTION_SERVER = 'production-server.example.com'
+        RECIPIENT_EMAIL = 'emailjenkins55@gmail.com'
         // Define a simple log file name
         LOG_FILE = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt"
     }
@@ -65,14 +68,15 @@ pipeline {
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
-       // mail bcc: '', body: "Stage Completed: ${currentBuild.currentResult}\nCheck console output at ${env.BUILD_URL} to view test results.", cc: '', from: '', replyTo: '', subject: "Pipeline Notification: ${currentBuild.fullDisplayName}", to: "emailjenkins55@gmail.com",
-        //attachmentsPattern: "**/final-pipeline-log.txt",
-        //mimeType: 'text/plain'
-
-                emailext body: 'Test Message',
-                subject: 'Test Subject',
-                to: 'emailjenkins55@gmail.com'
+            emailext (
+                to: "${env.RECIPIENT_EMAIL}",
+                subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+                body: "The pipeline has completed with status: ${currentBuild.currentResult}.\\nPlease find the attached logs for more details.",
+                attachmentsPattern: "**/final-pipeline-log.txt",
+                mimeType: 'text/plain'
+            )
+            // Optionally delete the log file if no longer needed
+            // bat "del ${LOG_FILE}"
         }
     }
 }
-      
