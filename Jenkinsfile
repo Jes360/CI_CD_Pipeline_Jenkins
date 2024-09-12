@@ -12,8 +12,7 @@ pipeline {
             steps {
                 script {
                     // Collect logs in environment variables or use script to append to a string
-                    println " hi hi hi hi hihi "
-                    echo " hu hu hu huh uh"
+                   
                     BUILD_LOGS = "Building the code...\nBuild tool: Maven\n"
                 }
             }
@@ -76,7 +75,7 @@ pipeline {
 
             
             // Send email with the log file attached
-            emailext attachLog: false,
+            emailext attachLog: true,
                      attachmentsPattern: "${env.LOG_FILE}",
                      subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
                      body: '''Build #${env.BUILD_NUMBER} has completed.
