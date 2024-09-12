@@ -1,9 +1,6 @@
 pipeline {
     agent any
     environment {
-        STAGING_SERVER = 'staging-server.example.com'
-        PRODUCTION_SERVER = 'production-server.example.com'
-        RECIPIENT_EMAIL = 'emailjenkins55@gmail.com'
         // Define a simple log file name
         LOG_FILE = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt"
     }
@@ -69,7 +66,7 @@ pipeline {
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
             emailext (
-                to: "${env.RECIPIENT_EMAIL}",
+                to: "emailjenkins55@gmail.com",
                 subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
                 body: "The pipeline has completed with status: ${currentBuild.currentResult}.\\nPlease find the attached logs for more details.",
             )
