@@ -68,8 +68,15 @@ pipeline {
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS} > ${LOG_FILE}"
             }
-          
-          
+            emailext (
+                to: "${env.RECIPIENT_EMAIL}",
+                subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+                body: "The pipeline has completed with status: ${currentBuild.currentResult}.\\nPlease find the attached logs for more details.",
+                attachmentsPattern: "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt"
+                mimeType: 'text/plain'
+            )
+            // Optionally delete the log file if no longer needed
+            // bat "del ${LOG_FILE}"
         }
     }
 }
