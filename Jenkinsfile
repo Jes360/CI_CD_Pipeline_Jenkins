@@ -3,9 +3,9 @@ pipeline {
     environment {
         STAGING_SERVER = 'staging-server.example.com'
         PRODUCTION_SERVER = 'production-server.example.com'
-        RECIPIENT_EMAIL = 'raaidrushdy@gmail.com'
+        RECIPIENT_EMAIL = 'emailjenkins55@gmail.com'
         // Define log file path for Windows
-        LOG_FILE = "pipeline-log-${env.BUILD_ID}.txt"
+        LOG_FILE = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\pipeline-log-${env.BUILD_ID}.txt"
     }
     stages {
         stage('Build') {
@@ -79,7 +79,7 @@ pipeline {
                 subject: "Pipeline ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
                 body: """The pipeline has completed with status: ${currentBuild.currentResult}.
                          Please find the attached logs for more details.""",
-                attachmentsPattern: "**/${LOG_FILE}",
+                attachmentsPattern: "**/pipeline-log-${env.BUILD_ID}.txt",
                 mimeType: 'text/plain'
             )
             // Clean up the log file after sending the email using Windows batch command
