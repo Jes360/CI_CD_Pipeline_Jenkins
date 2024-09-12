@@ -70,8 +70,8 @@ pipeline {
             }
             // Send email with the log file attached
             emailext 
-           // attachlog: False
-              //       attachmentsPattern: "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt",
+                    attachlog: False
+                    attachmentsPattern: "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Github\\final-pipeline-log.txt",
                     subject: "Jenkins Build Log - Build #${env.BUILD_NUMBER}",
                      body: '''Build #${env.BUILD_NUMBER} has completed.
                               Please find the attached log file for details.''',
