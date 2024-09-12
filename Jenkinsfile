@@ -12,6 +12,8 @@ pipeline {
             steps {
                 script {
                     // Collect logs in environment variables or use script to append to a string
+                    println " hi hi hi hi hihi "
+                    echo " hu hu hu huh uh"
                     BUILD_LOGS = "Building the code...\nBuild tool: Maven\n"
                 }
             }
@@ -67,7 +69,12 @@ pipeline {
                              DEPLOY_STAGING_LOGS + INTEGRATION_STAGING_LOGS + DEPLOY_PROD_LOGS
                 // Write the final logs to the log file
                 bat "echo ${FINAL_LOGS.replace('\n', '^n')} > ${LOG_FILE}"
+                
             }
+            
+
+
+            
             // Send email with the log file attached
             emailext attachLog: false,
                      attachmentsPattern: "${env.LOG_FILE}",
